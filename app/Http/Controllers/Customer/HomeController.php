@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers\Customer;
+
+use App\Models\Invoice;
+use App\Models\Order;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+
+class HomeController extends Controller
+{
+    public function index()
+    {
+        // return asset('imgs/admin/no-image.jpg');
+        $orders = Order::with('invoice')->where('user_id', Auth::user()->id)->get('status_id');
+        $invoices=Invoice::where('user_id',Auth::user()->id)->get('status_id');
+        $latestOrders = Order::with('invoice')->where('user_id', Auth::user()->id)->whereDate('created_at', Carbon::today())->get();
+
+        $data = [
+            'totalOrders' => $orders->count(),
+            // 'clearInvoices' =>  $orders->pluck('invoice')->where('status_id', 5)->count(),
+            'clearInvoices' => $invoices->where('status_id',5)->count(),
+            'pendingInvoices' => $invoices->where('status_id', 4)->count(),
+        ];
+
+        return view('customer.home', compact('data', 'latestOrders'));
+    }
+}

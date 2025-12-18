@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /register
+Disallow: /login
+Disallow: /password/reset
+Disallow: /privacy-policy
+Disallow: /terms-and-condition
+Allow: /
+
+Sitemap: https://nursingassignmenthelpersuk.co.uk/sitemap.xml
